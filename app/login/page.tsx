@@ -1,36 +1,15 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-interface InputProps {
-  type: string;
-  placeholder: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
+import Input from "@/app/login/input";
 
 const client_id = "your_kakao_client_id_here";
 const redirect_uri = "http://localhost:3000/oauth";
 const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`;
 
-const Input: React.FC<InputProps> = ({
-  type,
-  placeholder,
-  value,
-  onChange,
-}) => (
-  <input
-    type={type}
-    placeholder={placeholder}
-    value={value}
-    onChange={onChange}
-    className="w-full p-2 rounded-md border border-gray-300 mb-3"
-  />
-);
-
-export default function Page() {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -48,9 +27,9 @@ export default function Page() {
       <div className="flex flex-col space-y-7 border-2 border-gray-50 p-6 bg-white">
         <h2 className="text-2xl font-semibold text-center">로그인</h2>
 
-        <form onSubmit={handleSubmit}>
+        <div onSubmit={handleSubmit}>
           <Input
-            type="text"
+            type="email"
             placeholder="이메일"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -68,7 +47,7 @@ export default function Page() {
           >
             로그인
           </button>
-        </form>
+        </div>
 
         <div className="flex justify-center">
           <Image
@@ -76,13 +55,12 @@ export default function Page() {
             alt="카카오 로그인"
             width={200}
             height={50}
-            className="cursor-pointer"
             onClick={handleLogin}
           />
         </div>
 
         <div>
-          <Link href="/login/join">
+          <Link href="/sign">
             <button>회원가입</button>
           </Link>
         </div>

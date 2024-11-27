@@ -1,33 +1,12 @@
 "use client";
 
 import React, { useState, ChangeEvent } from "react";
-
-interface InputProps {
-  type: string;
-  placeholder: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
-
-const Input: React.FC<InputProps> = ({
-  type,
-  placeholder,
-  value,
-  onChange,
-}) => (
-  <input
-    type={type}
-    placeholder={placeholder}
-    value={value}
-    onChange={onChange}
-    className="w-full p-2 rounded-md border border-gray-300"
-  />
-);
+import Input from "@/app/signup/input";
 
 const areas = [""];
 const areas2 = [""];
 
-export default function Page() {
+export default function SignupPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
