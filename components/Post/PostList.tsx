@@ -9,7 +9,7 @@ interface PostType {
   authorNickName: string;
   created_at: string;
   gymName: string;
-  id: number;
+  id: string;
   imageUrl1: string;
   postStatus: string;
   title: string;

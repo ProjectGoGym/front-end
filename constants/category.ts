@@ -17,11 +17,11 @@ export const FIRST_FILTER_CATEGORY: FILTER_CATEGORY_TYPE[] = [
     categoryName: '게시글 종류',
     options: [
       {
-        value: 'sell',
+        value: 'SELL',
         optionName: '팝니다',
       },
       {
-        value: 'buy',
+        value: 'BUY',
         optionName: '삽니다',
       },
     ],
@@ -31,16 +31,16 @@ export const FIRST_FILTER_CATEGORY: FILTER_CATEGORY_TYPE[] = [
     categoryName: '게시글 상태',
     options: [
       {
-        value: 'ing',
+        value: 'PENDING',
         optionName: '게시중',
       },
       {
-        value: 'buyComplete',
-        optionName: '구매완료',
+        value: 'IN_PROGRESS',
+        optionName: '거래중',
       },
       {
-        value: 'sellComplete',
-        optionName: '판매완료',
+        value: 'COMPLETE',
+        optionName: '거래 완료',
       },
     ],
   },
@@ -49,15 +49,15 @@ export const FIRST_FILTER_CATEGORY: FILTER_CATEGORY_TYPE[] = [
     categoryName: '회원권 타입',
     options: [
       {
-        value: 'membership',
+        value: 'MEMBERSHUP_ONLY',
         optionName: '회원권',
       },
       {
-        value: 'membershipWithPT',
+        value: 'MEMBERSHIP_WITH_PT',
         optionName: '회원권 + PT',
       },
       {
-        value: 'PTOnly',
+        value: 'PT_ONLY',
         optionName: 'PT',
       },
     ],
