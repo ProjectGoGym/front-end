@@ -4,7 +4,19 @@ import Image from 'next/image';
 import { useState } from 'react';
 import profile from '@/public/default_profile.png';
 
-export default function Chat() {
+interface props {
+  onSendMessage: ({
+    chatRoomId,
+    senderId,
+    content,
+  }: {
+    chatRoomId: string;
+    senderId: string;
+    content: string;
+  }) => void;
+}
+
+export default function Chat({ onSendMessage }: props) {
   const [text, setText] = useState('');
 
   const handleText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -22,7 +34,7 @@ export default function Chat() {
     if (text.trim().length === 0) {
       return;
     }
-    console.log(text);
+    onSendMessage({ chatRoomId: '1', senderId: '1', content: text });
     setText('');
   };
 

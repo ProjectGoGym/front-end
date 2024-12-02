@@ -5,6 +5,7 @@ import axios from 'axios';
 import ChatList from './ChatList';
 import Chat from './Chat';
 import { useEffect } from 'react';
+import useWebSocketStore from '@/store/useSocketStore';
 
 interface ChatItem {
   chatRoomId: number;
@@ -18,6 +19,7 @@ interface ChatItem {
 }
 
 export default function ChatRoom() {
+  const { connect, messages, sendMessage, disconnect } = useWebSocketStore();
   //채팅방 목록 가져오기
   const { data, isSuccess } = useQuery<ChatItem[]>({
     queryKey: ['chatList'],
@@ -25,6 +27,16 @@ export default function ChatRoom() {
       (await axios.get('http://localhost:4000/chatList')).data,
     staleTime: 100000,
   });
+
+  useEffect(() => {
+    connect(process.env.NEXT_PUBLIC_BACKEND_URL + '/ws', '2', (message) => {
+      console.log('New message:', message.body);
+    });
+
+    return () => {
+      disconnect();
+    };
+  }, [connect, disconnect]);
 
   const sortedData =
     isSuccess && data?.length
@@ -34,6 +46,25 @@ export default function ChatRoom() {
           return dateB - dateA;
         })
       : [];
+
+  const handleSendMessage = ({
+    chatRoomId,
+    senderId,
+    content,
+  }: {
+    chatRoomId: string;
+    senderId: string;
+    content: string;
+  }) => {
+    sendMessage(
+      '/app/chatroom/message',
+      JSON.stringify({
+        chatRoomId,
+        senderId,
+        content,
+      })
+    );
+  };
 
   return (
     <div className=" flex w-[75%] h-[100%] border-l border-gray-400">
@@ -48,7 +79,7 @@ export default function ChatRoom() {
         ))}
         <div></div>
       </div>
-      <Chat />
+      <Chat onSendMessage={handleSendMessage} />
     </div>
   );
 }
