@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "qwe123@gmail.com",
+      "password": "123qwe"
+    },
+    {
+      "id": "2",
+      "email": "qwe456@gmail.com",
+      "password": "1324tet"
+    },
+    {
+      "id": "5148",
+      "params": {
+        "email": "alksfk@aldk"
+      }
+    }
+  ],
+  "signups": [
+    {
+      "id": "3",
+      "name": "닉닉",
+      "email": "qwe123@gmail.com",
+      "nickname": "니키",
+      "phone": "01012341234",
+      "password": "123qwe"
+    },
+    {
+      "id": "4",
+      "name": "닉넉",
+      "email": "qwe323@gmail.com",
+      "nickname": "너키",
+      "phone": "01014561234",
+      "password": "234qwe"
+    }
+  ],
+  "result": [
+    {
+      "nickname": "너키",
+      "email": "qwe563@gmail.com"
+    }
+  ]
+}

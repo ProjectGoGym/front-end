@@ -269,26 +269,6 @@
       "postType": "SELL",
       "postStatus": "PENDING",
       "membershipType": "MEMBERSHIP_WITH_PT"
-    },
-    {
-      "id": "a4e9",
-      "title": "팝니다",
-      "content": "<p>리ㅏㅣㅏㅁ유</p>",
-      "expirationDate": "2025-01-15",
-      "remainingSession": "12",
-      "amount": "300000",
-      "city": "서울특별시",
-      "district": "중구",
-      "latitude": 37.5546788388674,
-      "longitude": 126.970606917394,
-      "gymKaKaoUrl": "https://map.kakao.com/link/to/서울역,37.5546788388674,126.970606917394",
-      "gymName": "서울역",
-      "imageUrl1": "blob:http://localhost:3000/937a272a-a434-448f-ac87-52e6ccf44495",
-      "imageUrl2": "",
-      "imageUrl3": "",
-      "postType": "BUY",
-      "postStatus": "PENDING",
-      "membershipType": "MEMBERSHUP_ONLY"
     }
   ],
   "chatList": [
