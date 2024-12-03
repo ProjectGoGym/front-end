@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import PostItem from './PostItem';
+import axiosInstance from '@/api/axiosInstance';
 
 interface PostType {
   amount: number;
@@ -19,7 +20,8 @@ interface PostType {
 export default function PostList() {
   const { data } = useQuery({
     queryKey: ['post'],
-    queryFn: async () => (await axios.get('http://localhost:4000/posts')).data,
+    queryFn: async () =>
+      (await axiosInstance.get('/api/posts?page=0&size=10')).data,
     staleTime: 1000 * 10,
   });
 

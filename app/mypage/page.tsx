@@ -1,4 +1,4 @@
-import ChangeProfile from '@/components/MyProfile/ChangeProfile';
+import ChangeProfile from '@/components/MyProfile/Profile';
 import GympayBox from '@/components/MyProfile/GympayBox';
 
 export default function MyPage() {
