@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { Client, Message } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+import { create } from "zustand";
+import { Client, Message } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 interface WebSocketState {
   stompClient: Client | null;
@@ -23,7 +23,7 @@ const useWebSocketStore = create<WebSocketState>((set) => ({
       brokerURL: url,
       webSocketFactory: () => new SockJS(url),
       onConnect: () => {
-        console.log('웹소켓 연결 성공');
+        console.log("웹소켓 연결 성공");
         if (onMessage) {
           client.subscribe(`/topic/chatroom/${chatroomId}`, (message) => {
             set((state) => ({
@@ -34,10 +34,10 @@ const useWebSocketStore = create<WebSocketState>((set) => ({
         }
       },
       onDisconnect: () => {
-        console.log('웹소켓 연결 끊기');
+        console.log("웹소켓 연결 끊기");
       },
       onStompError: (error) => {
-        console.error('Stomp error:', error);
+        console.error("Stomp error:", error);
       },
     });
 

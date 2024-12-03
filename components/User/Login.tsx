@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { ChangeEvent, useState } from 'react';
-import Link from 'next/link';
-import axios from 'axios';
-import { BiSolidMessageRounded } from 'react-icons/bi';
+import { ChangeEvent, useState } from "react";
+import Link from "next/link";
+import axios from "axios";
+import { BiSolidMessageRounded } from "react-icons/bi";
 
 interface User {
   email: string;
@@ -39,13 +39,13 @@ const LoginInput = ({
 
 export default function LoginForm() {
   const [loginFormData, setLoginFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [loginErrors, setLoginErrors] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const handleLoginChange =
@@ -54,7 +54,7 @@ export default function LoginForm() {
       setLoginFormData({ ...loginFormData, [field]: e.target.value });
     };
 
-  const redirect_uri = 'http://localhost:3000/auth';
+  const redirect_uri = "http://localhost:3000/auth";
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_RESTAPI_KEY}&redirect_uri=${redirect_uri}&response_type=code`;
 
   const handleKakaoLogin = () => {
@@ -62,20 +62,20 @@ export default function LoginForm() {
   };
 
   const validateForm = () => {
-    let emailErr = '';
-    let passwordErr = '';
+    let emailErr = "";
+    let passwordErr = "";
     let valid = true;
 
     if (!loginFormData.email) {
-      emailErr = '이메일을 @포함해서 입력해주세요.';
+      emailErr = "이메일을 @포함해서 입력해주세요.";
       valid = false;
     } else if (!/\S+@\S+\.\S+/.test(loginFormData.email)) {
-      emailErr = '유효한 이메일 주소를 입력해주세요.';
+      emailErr = "유효한 이메일 주소를 입력해주세요.";
       valid = false;
     }
 
     if (!loginFormData.password) {
-      passwordErr = '비밀번호를 입력해주세요.';
+      passwordErr = "비밀번호를 입력해주세요.";
       valid = false;
     }
 
@@ -89,28 +89,27 @@ export default function LoginForm() {
 
     if (validateForm()) {
       try {
-        const response = await axios.post<User[]>('/backend/api/auth/sign-in', {
+        const response = await axios.post<User[]>("/backend/api/auth/sign-in", {
           email: loginFormData.email,
           password: loginFormData.password,
         });
         console.log(response);
         if (response) {
-          const authHeader = response.headers['authorization'];
+          const authHeader = response.headers["authorization"];
           if (authHeader) {
-            const token = authHeader.split(' ')[1];
-            console.log('JWT Token:', token);
+            const token = authHeader.split(" ")[1];
+            console.log("JWT Token:", token);
 
-            // 예시: 로컬 스토리지에 토큰 저장
-            sessionStorage.setItem('token', token);
+            sessionStorage.setItem("token", token);
           }
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.error('Axios error:', error.response || error.message);
+          console.error("Axios error:", error.response || error.message);
         } else {
-          console.error('Unknown error:', error);
+          console.error("Unknown error:", error);
         }
-        alert('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
+        alert("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
     }
   };
@@ -126,7 +125,7 @@ export default function LoginForm() {
         type="email"
         placeholder="이메일 : example@gmail.com"
         value={loginFormData.email}
-        onChange={handleLoginChange('email')}
+        onChange={handleLoginChange("email")}
         errorMessage={loginErrors.email}
       />
 
@@ -134,7 +133,7 @@ export default function LoginForm() {
         type="password"
         placeholder="비밀번호"
         value={loginFormData.password}
-        onChange={handleLoginChange('password')}
+        onChange={handleLoginChange("password")}
         errorMessage={loginErrors.password}
       />
 
