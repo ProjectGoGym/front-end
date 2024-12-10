@@ -8,8 +8,8 @@ const nextConfig: NextConfig = {
         destination: 'https://sgisapi.kostat.go.kr/:path*', // 실제 API 요청을 보낼 URL
       },
       {
-        source: '/backend/:path*', // Local API
-        destination: 'https://ac8c-175-195-104-144.ngrok-free.app/:path*',
+        source: "/backend/:path*", // Local API
+        destination: "https://go-gym.site/:path*",
       },
       {
         source: '/chat/:path*', // Local API
