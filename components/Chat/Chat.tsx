@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import useWebSocketStore from "@/store/useSocketStore";
 import DefaultProfile from "../UI/DefaultProfile";
 import axiosInstance from "@/api/axiosInstance";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import ChatPostDetail from "./ChatPostDetail";
 
 interface props {
@@ -146,12 +146,50 @@ export default function Chat({
     handleSendMessage();
   };
 
+  const { mutate: approve } = useMutation({
+    mutationKey: ["approve"],
+    mutationFn: async () =>
+      await axiosInstance.put(`/api/safe-payments/5/approve`),
+    onSuccess: () => alert("승인"),
+  });
+  const { mutate: reject } = useMutation({
+    mutationKey: ["reject"],
+    mutationFn: async () =>
+      await axiosInstance.put(`/api/safe-payments/5/reject`),
+    onSuccess: () => alert("거절"),
+  });
+  const { mutate: cancel } = useMutation({
+    mutationKey: ["cancel"],
+    mutationFn: async () =>
+      await axiosInstance.put(`/api/safe-payments/5/cancel`),
+    onSuccess: () => alert("취소"),
+  });
+  const { mutate: complete } = useMutation({
+    mutationKey: ["complete"],
+    mutationFn: async () =>
+      await axiosInstance.put(`/api/safe-payments/5/complete`),
+    onSuccess: () => alert("완료"),
+  });
   if (isPending) {
     return (
       <div className="relative flex h-[100%] w-[100%] flex-col border-r-2 bg-blue-200 bg-opacity-40 p-4">
         <ChatPostDetail onOpenModal={onOpenModal} />
         <div className="flex h-[calc(100%-10rem)] items-center justify-center">
           <span className="loading loading-ring loading-lg"></span>
+          <div className="flex h-48 w-48 flex-wrap items-center justify-center gap-4 rounded-lg bg-white">
+            <button className="btn" onClick={() => approve()}>
+              승인
+            </button>
+            <button className="btn" onClick={() => reject()}>
+              거절
+            </button>
+            <button className="btn" onClick={() => cancel()}>
+              취소
+            </button>
+            <button className="btn" onClick={() => complete()}>
+              완료
+            </button>
+          </div>
         </div>
         <div className="absolute bottom-0 left-0 flex h-24 w-full bg-white p-2">
           <textarea

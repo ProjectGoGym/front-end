@@ -2,25 +2,40 @@
 
 import Image from "next/image";
 import profile from "../../public/default_profile.png";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 // import axiosInstance from "@/api/axiosInstance";
 import Link from "next/link";
 import axios from "axios";
 import { useEffect } from "react";
 import useUserStore from "@/store/useUserStore";
+import axiosInstance from "@/api/axiosInstance";
+import useLoginStore from "@/store/useLoginStore";
 
-export default function ChangeProfile() {
+export default function Profile() {
   const { InitUser, user } = useUserStore();
+  const { logout } = useLoginStore();
   const { data: userData, isSuccess } = useQuery({
     queryKey: ["user"],
-    // queryFn: async () => await axiosInstance.get('/api/members/me'),
-    queryFn: async () => await axios.get("http://localhost:4000/user"),
+    queryFn: async () => {
+      const response: any = await axiosInstance.get("/api/members/me/profile");
+      return response;
+    },
+    // queryFn: async () => await axios.get("http://localhost:4000/user"),
     staleTime: 0,
   });
 
+  const { mutate: deleteUser } = useMutation({
+    mutationKey: ["deleteuser"],
+    mutationFn: async () => await axiosInstance.put(`/api/members/me/withdraw`),
+    onSuccess: () => {
+      alert("탈퇴되었습니다.");
+      logout();
+    },
+  });
+
   useEffect(() => {
-    if (isSuccess && userData?.data) {
-      InitUser(userData.data);
+    if (isSuccess && userData) {
+      InitUser(userData);
     }
   }, [isSuccess, user, InitUser]);
 
@@ -48,11 +63,19 @@ export default function ChangeProfile() {
           </div> */}
         </div>
       </div>
-      <Link href={"/mypage/changeProfile"} className="ml-auto">
-        <button className="btn btn-info border-none bg-blue-500 text-white hover:bg-blue-700">
-          프로필 수정
+      <div className="ml-auto flex flex-col gap-2">
+        <Link href={"/mypage/changeProfile"} className="ml-auto">
+          <button className="btn btn-info border-none bg-blue-500 text-white hover:bg-blue-700">
+            프로필 수정
+          </button>
+        </Link>
+        <button
+          onClick={() => deleteUser()}
+          className="btn btn-active bg-red-500 text-white hover:bg-red-600"
+        >
+          회원탈퇴
         </button>
-      </Link>
+      </div>
     </div>
   );
 }

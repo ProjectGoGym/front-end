@@ -8,6 +8,8 @@ import useLoginStore from "@/store/useLoginStore";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import form from "../../public/form.png";
+import axiosInstance from "@/api/axiosInstance";
+import useUserStore from "@/store/useUserStore";
 
 interface User {
   email: string;
@@ -43,6 +45,7 @@ const LoginInput = ({
 
 export default function LoginForm() {
   const [showPw, setShowPw] = useState(false);
+  const { InitUser } = useUserStore();
   const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
@@ -108,9 +111,17 @@ export default function LoginForm() {
           if (authHeader) {
             const token = authHeader.split(" ")[1];
             console.log("JWT Token:", token);
-
             sessionStorage.setItem("token", token);
 
+            //백엔드 연결시 axiosInstance로 교체
+            const userData = async () => {
+              const response: any = await axios.get(
+                "http://localhost:4000/user",
+              );
+              InitUser(response.data);
+            };
+
+            userData();
             login(token);
             router.push("/");
           }

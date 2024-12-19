@@ -6,14 +6,11 @@
     "nickname": "전빡빡",
     "phone": "010-7634-7212",
     "profileImageUrl": null,
-    "interestArea1": "시흥시",
-    "interestArea2": null,
-    "payMoneyId": null,
-    "payMoneyBalance": null
+    "gymPayBalance": null
   },
   "posts": [
     {
-      "id": "1",
+      "postId": "1",
       "title": "제목입니다~",
       "postStatus": "PENDING",
       "amount": 10000,
@@ -25,7 +22,7 @@
       "authorNickName": "헬스인1"
     },
     {
-      "id": "2",
+      "postId": "2",
       "title": "제목입니다~",
       "postStatus": "PENDING",
       "amount": 10000,
@@ -37,7 +34,7 @@
       "authorNickName": "헬스인2"
     },
     {
-      "id": "3",
+      "postId": "3",
       "title": "제목입니다~",
       "postStatus": "PENDING",
       "amount": 10000,
@@ -49,7 +46,7 @@
       "authorNickName": "헬스인3"
     },
     {
-      "id": "4",
+      "postId": "4",
       "title": "제목입니다~",
       "postStatus": "PENDING",
       "amount": 10000,
@@ -61,7 +58,7 @@
       "authorNickName": "헬스인4"
     },
     {
-      "id": "5",
+      "postId": "5",
       "title": "제목입니다~",
       "postStatus": "PENDING",
       "amount": 10000,
@@ -73,7 +70,7 @@
       "authorNickName": "헬스인5"
     },
     {
-      "id": "6",
+      "postId": "6",
       "title": "제목입니다~",
       "postStatus": "",
       "amount": 10000,
@@ -87,7 +84,7 @@
   ],
   "postDetails": [
     {
-      "id": "1",
+      "postId": "1",
       "title": "oo 헬스장 이용권 양도합니다",
       "content": "사물함, 운동복 이용권 그냥 드립니다 연락 주세요",
       "postType": "SELL",

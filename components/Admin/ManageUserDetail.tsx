@@ -21,7 +21,9 @@ export default function ManageUserDetail() {
         {decodeURIComponent(userId)}의 게시글
       </h2>
       <div className="overflow-x-auto">
-        <PostList />
+        <div className="mb-20 flex min-h-96 w-[100%] gap-4 overflow-x-auto p-12 lg:grid lg:grid-cols-2 lg:justify-items-center 2xl:grid-cols-3">
+          <PostList />
+        </div>
       </div>
     </div>
   );

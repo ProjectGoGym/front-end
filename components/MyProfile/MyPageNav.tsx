@@ -26,14 +26,14 @@ export default function MyPageNav() {
   };
 
   useEffect(() => {
-    if (params.category) {
+    if (params.category === "recent-view" || "my-posts" || "wishlist") {
       setVisible({ ...visible, post: true });
-    } else {
-      setVisible({ post: false, trans: false });
+    } else if (params.category === "purchaselist" || "salelist") {
+      setVisible({ ...visible, trans: true });
     }
 
     console.log(params);
-  }, [params]);
+  }, [params.category]);
 
   return (
     <div className="mt-16 flex min-w-48 flex-col">
@@ -101,16 +101,28 @@ export default function MyPageNav() {
         </button>
         {visible.trans && (
           <div className="flex animate-slide-down flex-col items-start gap-2 p-2">
-            <button
-              className={`cursor-pointer text-sm font-bold text-gray-600 hover:text-blue-500`}
-            >
-              구매 목록
-            </button>
-            <button
-              className={`cursor-pointer text-sm font-bold text-gray-600 hover:text-blue-500`}
-            >
-              판매 목록
-            </button>
+            <Link href={"/mypage/postLook/purchaselist"}>
+              <button
+                className={`cursor-pointer text-sm font-bold hover:text-blue-500 ${
+                  params.category === "purchaselist"
+                    ? "text-blue-500"
+                    : "text-gray-600"
+                }`}
+              >
+                구매 목록
+              </button>
+            </Link>
+            <Link href={"/mypage/postLook/salelist"}>
+              <button
+                className={`cursor-pointer text-sm font-bold hover:text-blue-500 ${
+                  params.category === "salelist"
+                    ? "text-blue-500"
+                    : "text-gray-600"
+                }`}
+              >
+                판매 목록
+              </button>
+            </Link>
           </div>
         )}
       </div>

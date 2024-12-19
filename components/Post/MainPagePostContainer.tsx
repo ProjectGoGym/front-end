@@ -58,5 +58,9 @@ export default function MainPagePostContainer() {
     );
   }
 
-  return <PostList data={data} />;
+  return (
+    <div className="mb-20 flex min-h-96 w-[100%] gap-4 overflow-x-auto p-12 lg:grid lg:grid-cols-2 lg:justify-items-center 2xl:grid-cols-3">
+      <PostList data={data} />
+    </div>
+  );
 }

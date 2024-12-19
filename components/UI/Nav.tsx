@@ -11,9 +11,11 @@ import Notice from "../Notification/Notice";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useState } from "react";
 import MobileMenu from "./MoblieMenu";
+import useUserStore from "@/store/useUserStore";
 
 export default function Nav() {
   const { loginState, adminLoginState, logout } = useLoginStore();
+  const { LogoutUser } = useUserStore();
   const [modal, setModal] = useState(false);
   const [menuModal, setMenuModal] = useState(false);
 
@@ -87,7 +89,14 @@ export default function Nav() {
                   </Link>
                 </li>
                 <li>
-                  <p onClick={logout}>Logout</p>
+                  <p
+                    onClick={() => {
+                      logout();
+                      LogoutUser();
+                    }}
+                  >
+                    Logout
+                  </p>
                 </li>
               </ul>
             </div>

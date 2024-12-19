@@ -7,7 +7,7 @@ export default function MyPageLayout({
 }) {
   return (
     <div className="relative flex justify-center">
-      <div className="flex w-[75%] justify-center gap-12">
+      <div className="flex w-[90%] justify-center gap-12">
         <MyPageNav />
         {children}
       </div>

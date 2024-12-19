@@ -1,6 +1,9 @@
 "use client";
 
+import axiosInstance from "@/api/axiosInstance";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 export default function ChatPostDetail({
   onOpenModal,
@@ -8,7 +11,18 @@ export default function ChatPostDetail({
   onOpenModal: () => void;
 }) {
   const [modal, setModal] = useState(false);
+  const [modal1, setModal1] = useState(false);
   const [amount, setAmount] = useState("");
+
+  const { mutate: paystart } = useMutation({
+    mutationKey: ["start"],
+    mutationFn: async () =>
+      await axiosInstance.post("/api/safe-payments/1", {
+        responderId: "1",
+        amount: 10000,
+      }),
+    onSuccess: () => alert("결제를 요청했습니다."),
+  });
 
   const handleClick = () => {
     setModal(true);
@@ -26,10 +40,7 @@ export default function ChatPostDetail({
     e.preventDefault();
     const realAmount = +amount.replace(/,/g, "");
 
-    if (Number.isNaN(realAmount)) {
-      alert("숫자만 입력해주세요");
-      return;
-    }
+    paystart();
     console.log(realAmount);
     setModal(false);
   };
@@ -49,37 +60,48 @@ export default function ChatPostDetail({
       </div>
       <div className="flex items-center justify-between">
         <p className="font-semibold">10,000원</p>
-        <div>
+        <div className="flex items-center gap-2">
+          <AiOutlineExclamationCircle
+            size={18}
+            color="#999999"
+            onMouseOver={() => setModal1(true)}
+            onMouseOut={() => setModal1(false)}
+          />
+          {modal1 && (
+            <div className="absolute translate-x-0 translate-y-10 rounded-xl bg-gray-100 p-2 text-xs font-bold text-gray-500 shadow-lg">
+              <p>거래 일정을 등록하면 </p>
+              <p>예상 출발시간에 채팅을 보내드려요!</p>
+            </div>
+          )}
           <button
             onClick={handleClick}
             className="btn btn-active border-blue-500 bg-white hover:bg-blue-500 hover:text-white"
           >
-            거래 신청
+            거래 일정 잡기
           </button>
         </div>
       </div>
       {modal && (
         <div className="animate-slide-down">
-          <form
-            onSubmit={handleSubmit}
-            className="mt-8 flex flex-col gap-4 rounded-lg border-2 border-blue-300 p-4"
-          >
-            <p className="font-bold">거래신청</p>
-            <div className="flex flex-col justify-between gap-4 sm:flex-row">
-              <div className="flex flex-col items-center">
-                <input
-                  type="text"
-                  placeholder="거래할 금액을 입력해주세요"
-                  className="flex h-12 w-[100%] min-w-64 rounded-lg border border-gray-300 p-2 focus:outline-none"
-                  onChange={handleChangeMoney}
-                  value={formatNumber(amount)}
-                />
-              </div>
-              <button
-                type="submit"
-                className="btn rounded-lg bg-blue-400 p-1 text-sm font-bold text-white transition-all hover:bg-blue-500"
+          <form onSubmit={handleSubmit} className="mt-8 flex">
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor={"expirationDate"}
+                className="text-sm text-gray-500"
               >
-                거래하기
+                거래일정
+              </label>
+              <input
+                type="date"
+                className="h-12 w-48 cursor-pointer rounded-md border border-gray-400 pl-2 text-gray-600 focus:outline-blue-400"
+                name={"expirationDate"}
+                id={"expirationDate"}
+                // onChange={handleValues}
+                // value={values.expirationDate}
+                placeholder="ex) 2025/02/24"
+              />
+              <button className="btn" type="submit">
+                요청
               </button>
             </div>
           </form>

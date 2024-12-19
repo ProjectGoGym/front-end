@@ -1,6 +1,9 @@
 "use client";
+import axiosInstance from "@/api/axiosInstance";
 import S3ImageUrl from "@/hooks/S3ImageUrl";
 import useUserStore from "@/store/useUserStore";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
@@ -36,14 +39,41 @@ interface InputProps {
 
 export default function ChangeProfile() {
   const { user } = useUserStore();
-
+  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [file, setFile] = useState<string>("");
+  const [preview, setPreview] = useState<File | null>(null);
   const [values, setValues] = useState({
     nickname: "",
     phone: "",
     password: "",
   });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const checkNickname = useMutation<boolean, Error, string>({
+    mutationFn: async (nickname: string) => {
+      if (!nickname) {
+        throw new Error("닉네임을 입력해주세요.");
+      }
+
+      // 닉네임 중복확인
+      const response = await axios.get("/backend/api/auth/check-nickname", {
+        params: { nickname },
+      });
+      if (response.status === 200) {
+        return true;
+      } else {
+        throw new Error("닉네임 이미 존재합니다.");
+      }
+    },
+    onSuccess: () => {
+      setIsNicknameAvailable(true);
+      alert("닉네임 사용 가능합니다.");
+    },
+    onError: (error) => {
+      setIsNicknameAvailable(false);
+      alert(error.message);
+    },
+  });
 
   const handleButtonClick = () => {
     fileInputRef.current?.click(); // useRef를 사용하여 파일 입력 요소 클릭
@@ -57,16 +87,32 @@ export default function ChangeProfile() {
         e.target.files[0],
         "members",
       );
+      setPreview(e.target.files[0]);
       setFile(newImg.toString());
     }
   };
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [e.target.name]: [e.target.value] });
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  const { mutate: submit } = useMutation({
+    mutationKey: ["submit"],
+    mutationFn: async () =>
+      await axiosInstance.put("/api/members/me/profile", {
+        name: user ? user.name : "",
+        nickname: values.nickname,
+        phone: values.phone,
+        profileImageUrl: "http://example.com/image.jpg",
+      }),
+    onSuccess: () => {
+      alert("수정완료");
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    submit();
   };
 
   return (
@@ -79,7 +125,7 @@ export default function ChangeProfile() {
         <>
           <div className="relative ml-auto mr-auto flex h-[240px] w-[240px] justify-center overflow-hidden rounded-[100%] border border-gray-300">
             <Image
-              src={file}
+              src={URL.createObjectURL(preview!)}
               alt="헬스장 이미지"
               className="rounded-lg"
               layout="fill"
@@ -137,45 +183,71 @@ export default function ChangeProfile() {
         />
       </div>
 
-      <div className="flex items-center space-x-2">
-        <div>
-          <SignupInput
-            type="text"
-            placeholder={user ? user.email : ""}
-            value={user ? user.email : ""}
-            disabled={true}
-          />
-        </div>
+      <div>
+        <SignupInput
+          type="text"
+          placeholder={user ? user.email : ""}
+          value={user ? user.email : ""}
+          disabled={true}
+        />
       </div>
 
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center justify-between">
         <div>
           <SignupInput
             type="text"
-            placeholder="닉네임"
+            placeholder={user ? user.nickname : ""}
             disabled={false}
-            value={user ? user.nickname : ""}
+            value={values.nickname}
             name="nickname"
             onChange={handleChangeValue}
           />
         </div>
+        <button
+          type="button"
+          onClick={() => checkNickname.mutate(values.nickname)}
+          className="rounded-md bg-blue-500 px-4 py-2 text-white focus:outline-none"
+          disabled={isNicknameAvailable}
+        >
+          {isNicknameAvailable ? "사용 가능" : "중복확인"}
+        </button>
       </div>
 
       <div>
+        {/* 세자리 네자리 네자리 자동넘어가기 */}
         <SignupInput
           type="text"
-          placeholder="핸드폰 번호 ex)010-0000-0000"
+          placeholder={user ? user.phone : ""}
           disabled={false}
-          value={user ? user.phone : ""}
+          value={values.phone}
           name="phone"
           onChange={handleChangeValue}
         />
       </div>
 
+      {/* <div className="flex items-center justify-between">
+        <div>
+          <SignupInput
+            type="password"
+            placeholder="현재 비밀번호"
+            disabled={false}
+            name="password"
+            onChange={handleChangeValue}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={() => checkNickname.mutate(values.nickname)}
+          className="rounded-md bg-blue-500 px-4 py-2 text-white focus:outline-none"
+          disabled={isNicknameAvailable}
+        >
+          {isNicknameAvailable ? "사용 가능" : "중복확인"}
+        </button>
+      </div> */}
       <div>
         <SignupInput
           type="password"
-          placeholder="비밀번호"
+          placeholder="새 비밀번호"
           disabled={false}
           name="password"
           onChange={handleChangeValue}

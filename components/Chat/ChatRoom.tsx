@@ -86,7 +86,7 @@ export default function ChatRoom() {
       </button> */}
 
       <div
-        className={`flex h-[100%] w-[100%] ${modal ? "" : "hidden"} flex-col border-2 sm:block sm:w-[50%]`}
+        className={`flex h-[100%] w-[100%] ${modal ? "" : "hidden"} animate-slide-down flex-col border-2 sm:block sm:w-[50%]`}
       >
         <button
           onClick={handleCloseModal}

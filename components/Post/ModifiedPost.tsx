@@ -76,6 +76,11 @@ export default function ModifiedPost() {
     gymName: "",
   });
   //<Record<string, string | File | null>> 백엔드 연동시 타입추가
+  const [preview, setPreview] = useState<Record<string, File | null>>({
+    imageUrl1: null,
+    imageUrl2: null,
+    imageUrl3: null,
+  });
   const [images, setImages] = useState<Record<string, string | null>>({
     imageUrl1: "",
     imageUrl2: "",
@@ -181,11 +186,17 @@ export default function ModifiedPost() {
 
   const handleFileSelect = async (key: string, img: File) => {
     // 백엔드 연동시 파일자체 보내기
-    const newImg = await S3ImageUrl(img.name, img, "posts");
-    setImages({
-      ...images,
-      [key]: newImg.toString(),
+    setPreview({
+      ...preview,
+      [key]: img,
     });
+    const newImg = await S3ImageUrl(img.name, img, "posts");
+    if (newImg) {
+      setImages((prevImages) => ({
+        ...prevImages,
+        [key]: newImg.toString(),
+      }));
+    }
   };
 
   const handleDeleteImage = (el: string) => {
@@ -369,14 +380,15 @@ export default function ModifiedPost() {
             <QuillEditor onChange={handleContent} />
           </div>
           <div className="flex w-[100%] max-w-[1200px] items-center justify-between">
-            {Object.keys(images).map((el) =>
-              images[el] ? (
+            {Object.keys(preview).map((el) =>
+              preview[el] ? (
                 <div
                   key={el}
                   className="relative flex h-56 min-w-60 items-center justify-center"
                 >
                   <button
-                    className="absolute right-0 top-[-30px]"
+                    type="button"
+                    className="absolute right-0 top-[-20px]"
                     onClick={() => handleDeleteImage(el)}
                   >
                     ❌
@@ -384,11 +396,11 @@ export default function ModifiedPost() {
                   <Image
                     // json서버 사용시까진 blob url
                     // src={images[el] as string}
-                    src={images[el] || ""}
+                    src={URL.createObjectURL(preview[el]!)}
+                    width={224}
+                    height={15}
                     alt="헬스장 이미지"
                     className="rounded-lg"
-                    fill
-                    style={{ objectFit: "cover" }}
                   />
                 </div>
               ) : (
