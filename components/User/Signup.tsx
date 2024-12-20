@@ -372,7 +372,7 @@ export default function SignupPage() {
           alt="Login Image"
           width={600}
           height={400}
-          className="h-[35rem] w-[18rem] rounded-l-xl object-cover"
+          className="h-[40rem] w-[18rem] rounded-l-xl object-cover"
         />
       </div>
       <div className="flex items-center justify-center rounded-r-xl bg-white">
@@ -381,7 +381,7 @@ export default function SignupPage() {
             e.preventDefault();
             handleSignupSubmit.mutate();
           }}
-          className="h-[35rem] w-[40rem] max-w-md space-y-2 rounded-r-xl border-b-2 border-r-2 border-t-2 border-gray-200 p-8"
+          className="h-[40rem] w-[40rem] max-w-md space-y-2 rounded-r-xl border-b-2 border-r-2 border-t-2 border-gray-200 p-8"
         >
           <h2 className="text-center text-2xl font-semibold">회원가입</h2>
 
@@ -416,7 +416,7 @@ export default function SignupPage() {
             </>
           ) : (
             <div className="relative ml-auto mr-auto flex h-[110px] w-[110px] justify-center overflow-hidden rounded-[100%] border border-gray-300">
-              <div className="flex h-20 w-60 items-center justify-center">
+              <div className="h-21 flex w-60 items-center justify-center">
                 <input
                   type="file"
                   accept="image/*"
